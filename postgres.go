@@ -39,8 +39,8 @@ func SetupPostgres(
 			// wait.ForLog returns a LogStrategy pointer which
 			// HAS the methods WithOccurrence and WithStartupTimeout
 			wait.ForLog("database system is ready to accept connections").
-				WithOccurrence(1).
-				WithStartupTimeout(10*time.Second),
+				WithOccurrence(2).
+				WithStartupTimeout(15*time.Second),
 		),
 	)
 
@@ -54,7 +54,7 @@ func SetupPostgres(
 		}
 	})
 
-	connStr, err := pgContainer.ConnectionString(ctx)
+	connStr, err := pgContainer.ConnectionString(ctx, "sslmode=disable")
 
 	if err != nil {
 		t.Fatalf("failed to get connection string: %s", err)
